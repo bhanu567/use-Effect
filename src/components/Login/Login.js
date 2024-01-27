@@ -19,6 +19,28 @@ const Login = (props) => {
       );
   }, [enteredEmail, enteredPassword, enteredCollege])
 
+  useEffect(()=>{
+    console.log("Effect Will run as a normal function. since, have no parameter");
+  })
+
+  useEffect(()=>{
+    console.log("Effect Will run only after every renders. since, have no parameter dependencies");
+  }, [])
+
+  useEffect(()=>{
+    const identifier = setTimeout(() => {
+      console.log('checking form validity');
+      setFormIsValid(
+        enteredEmail.includes('@') && enteredPassword.trim().length > 6 && enteredCollege.trim().length > 0
+        );
+    }, 500);
+    return(()=>{
+      console.log('CLEANUP');
+      console.log('clearing all the previous timeouts except the last one');
+      clearTimeout(identifier);
+    })
+  }, [enteredEmail, enteredPassword, enteredCollege])
+
   const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
 
